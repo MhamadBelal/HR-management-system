@@ -33,7 +33,8 @@ Employee.prototype.calSalary=function()
         this.salary=Math.floor(Math.random() * (1000 - 500 + 1) + 500);
     }
     
-    netSalary=this.salary-(this.salary*0.75);
+    netSalary=this.salary-(this.salary*0.075);
+    this.salary=netSalary;
 }
 
 
