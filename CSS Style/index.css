@@ -56,7 +56,10 @@
         background-color: coral;
     }
     
-    
+    main{
+        margin-top: 20px;;
+        font-size: 20px;
+    }
     
     footer{
         display: flex;
@@ -71,4 +74,36 @@
     footer p,footer h3{
         font-size: 20px;
         color:darkred;
+    }
+
+    form{
+        width:60%;
+        background-color: #0EA293;
+        margin: auto;
+        text-align: center;
+        padding: 20px;
+    }
+
+    input,select{
+        width: 60%;
+        display: block;
+        margin: 10px auto;
+        height: 1.8rem;
+        font-size: 20px;
+    }
+
+    legend{
+        margin: 20px auto;
+    }
+
+
+    input[type="submit"]{
+        background-color:aquamarine;
+        border: 1px solid green;
+        margin-top: 20px;
+    }
+
+    input[type="submit"]:hover{
+        background-color:cadetblue ;
+        border: 2px solid green;
     }

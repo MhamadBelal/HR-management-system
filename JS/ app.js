@@ -1,22 +1,31 @@
 'use strict';
 
-
+let Employees=[];
 let netSalary;
+let form = document.getElementById('add-Employee');
 
+form.addEventListener('submit', addNewEmployee);
 
 
 //constructor
-function Employee(empId,fullName,department,level,salary){
-    this.empId=empId;
+function Employee(fullName,department,level,imageURL){
+    this.empId=generateEmployeeID();
     this.fullName=fullName;
     this.department=department;
     this.level=level;
-    this.imageURL=`./assets/${this.fullName}.png`;
+    this.imageURL=`./assets/${imageURL}`;
     this.salary=0;
+
+    Employees.push(this);
 }
 
+//enerateEmployeeID Function
+function generateEmployeeID() {
+    let id = Math.floor(Math.random() * 9000) + 1000;
+    return id;
+  }
 
-
+  
 //calculating salary and net salary
 Employee.prototype.calSalary=function()
 {
@@ -42,11 +51,64 @@ Employee.prototype.calSalary=function()
 //rendering function
 Employee.prototype.showEmploye=function()
 {
-    document.write(`fullName: ${this.fullName} ,Salary: ${this.salary}<br>`);
+    const container= document.getElementById('container');
+
+    const divEl= document.createElement('div');
+    divEl.style.width='25%';
+    divEl.style.backgroundColor="green";
+    divEl.style.margin="20px"
+    divEl.style.height="300px";
+    divEl.style.display="inline-block";
+    container.appendChild(divEl);
+
+    const imgEl=document.createElement('img');
+    imgEl.src=`${this.imageURL}`;
+    imgEl.style.width="80%";
+    imgEl.style.height="180px";
+    imgEl.style.margin="25px";
+    imgEl.style.marginBottom="10px";
+    imgEl.style.textAlign="center";
+    divEl.appendChild(imgEl);
+
+    const pEl1=document.createElement('p');
+    pEl1.textContent =`Name: ${this.fullName} - ID: ${this.empId}`
+    pEl1.style.marginTop="0";
+    pEl1.style.fontSize="15px";
+    pEl1.style.textAlign="center";
+    divEl.appendChild(pEl1);
+
+    const pEl2=document.createElement('p');
+    pEl2.textContent =`Department: ${this.department} - Level: ${this.level}`
+    pEl2.style.fontSize="15px";
+    pEl2.style.textAlign="center";
+    divEl.appendChild(pEl2);
+
+    const pEl3=document.createElement('p');
+    pEl3.textContent =`${this.salary}`
+    pEl3.style.fontSize="15px";
+    pEl3.style.textAlign="center";
+    divEl.appendChild(pEl3);
+
+
 }
 
 
-//employees information
+
+
+function addNewEmployee(event){
+    event.preventDefault();
+    let name = event.target.fullName.value;
+    let department = event.target.Departments.value;
+    let level = event.target.Levels.value;
+    let imageURL = event.target.imageURL.value;
+    let newEmployee = new Employee(name,department,level,imageURL);
+    newEmployee.calSalary();
+    newEmployee.showEmploye();
+}
+
+
+
+/*employees information
 const employees = [
     new Employee(1000, 'Ghazi Samer', 'Administration', 'Senior'),
     new Employee(1001, 'Lana Ali', 'Finance', 'Senior'),
@@ -56,10 +118,12 @@ const employees = [
     new Employee(1005, 'Rana Saleh', 'Development', 'Junior'),
     new Employee(1006, 'Hadi Ahmad', 'Finance', 'Mid-Senior')
   ];
-  
-
+  */
+/*
 //rendering objects
-for (let i = 0; i < employees.length; i++) {
+for (let i = 0; i < Employees.length; i++) {
     employees[i].calSalary();
     employees[i].showEmploye();
 }
+
+*/
