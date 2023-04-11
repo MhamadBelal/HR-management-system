@@ -1,5 +1,6 @@
 'use strict';
 
+
 let netSalary;
 
 
@@ -11,7 +12,7 @@ function Employee(empId,fullName,department,level,salary){
     this.department=department;
     this.level=level;
     this.imageURL=`./assets/${this.fullName}.png`;
-    this.salary=salary;
+    this.salary=0;
 }
 
 
