@@ -13,7 +13,7 @@ function Employee(fullName,department,level,imageURL){
     this.fullName=fullName;
     this.department=department;
     this.level=level;
-    this.imageURL=`./assets/${imageURL}`;
+    this.imageURL=imageURL;
     this.salary=0;
 
     Employees.push(this);
@@ -62,7 +62,14 @@ Employee.prototype.showEmploye=function()
     container.appendChild(divEl);
 
     const imgEl=document.createElement('img');
-    imgEl.src=`${this.imageURL}`;
+    if(this.imageURL)
+    {
+        imgEl.src=this.imageURL;
+    }
+    else{
+        imgEl.src=`./assets/${this.fullName}.jpg`;
+    }
+    imgEl.alt="Personal image";
     imgEl.style.width="80%";
     imgEl.style.height="180px";
     imgEl.style.margin="25px";
