@@ -1,20 +1,30 @@
 'use strict';
 
-let Employees=[];
+
+
+let Employees = [];
 let netSalary;
 let form = document.getElementById('add-Employee');
+
+
 
 form.addEventListener('submit', addNewEmployee);
 
 
 //constructor
-function Employee(fullName,department,level,imageURL){
-    this.empId=generateEmployeeID();
-    this.fullName=fullName;
-    this.department=department;
-    this.level=level;
-    this.imageURL=imageURL;
-    this.salary=0;
+function Employee(fullName, department, level, imageURL) {
+    this.empId = generateEmployeeID();
+    this.fullName = fullName;
+    this.department = department;
+    this.level = level;
+    if (imageURL == null || imageURL == '') {
+        this.imageURL = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Crystal_personal.svg/640px-Crystal_personal.svg.png';
+    }
+    else {
+        this.imageURL = imageURL;
+    }
+
+    this.salary = this.calSalary();
 
     Employees.push(this);
 }
@@ -23,78 +33,79 @@ function Employee(fullName,department,level,imageURL){
 function generateEmployeeID() {
     let id = Math.floor(Math.random() * 9000) + 1000;
     return id;
-  }
-
-  
-//calculating salary and net salary
-Employee.prototype.calSalary=function()
-{
-    if(this.level=='Senior')
-    {
-        this.salary=Math.floor(Math.random() * (2000 - 1500 + 1) + 1500);
-    }
-    else if(this.level=='Mid-Senior')
-    {
-        this.salary=Math.floor(Math.random() * (1500 - 1000 + 1) + 1000);
-    }
-    else if(this.level=='Junior')
-    {
-        this.salary=Math.floor(Math.random() * (1000 - 500 + 1) + 500);
-    }
-    
-    netSalary=this.salary-(this.salary*0.075);
-    this.salary=netSalary;
 }
+
+
+//calculating salary and net salary
+Employee.prototype.calSalary = function () {
+    if (this.level == 'Senior') {
+        this.salary = Math.floor(Math.random() * (2000 - 1500 + 1) + 1500);
+    }
+    else if (this.level == 'Mid-Senior') {
+        this.salary = Math.floor(Math.random() * (1500 - 1000 + 1) + 1000);
+    }
+    else if (this.level == 'Junior') {
+        this.salary = Math.floor(Math.random() * (1000 - 500 + 1) + 500);
+    }
+
+    netSalary = this.salary - (this.salary * 0.075);
+    this.salary = netSalary;
+    return this.salary;
+}
+
 
 
 
 //rendering function
-Employee.prototype.showEmploye=function()
-{
-    const container= document.getElementById('container');
+function showEmploye() {
+    const container = document.getElementById('container');
 
-    const divEl= document.createElement('div');
-    divEl.style.width='25%';
-    divEl.style.backgroundColor="green";
-    divEl.style.margin="20px"
-    divEl.style.height="300px";
-    divEl.style.display="inline-block";
-    container.appendChild(divEl);
+    getAllEmployees();
 
-    const imgEl=document.createElement('img');
-    if(this.imageURL)
-    {
-        imgEl.src=this.imageURL;
+    if (Employees == null) {
+        Employees = [];
     }
-    else{
-        imgEl.src=`./assets/${this.fullName}.jpg`;
+
+    for (let i = 0; i < Employees.length; i++) {
+        const divEl = document.createElement('div');
+        divEl.style.width = '25%';
+        divEl.style.backgroundColor = "green";
+        divEl.style.margin = "20px"
+        divEl.style.height = "auto";
+        divEl.style.display = "inline-block";
+        container.appendChild(divEl);
+
+        const imgEl = document.createElement('img');
+        imgEl.src = Employees[i].imageURL;
+        imgEl.alt = "Personal image";
+        imgEl.style.width = "80%";
+        imgEl.style.height = "180px";
+        imgEl.style.margin = "25px";
+        imgEl.style.marginBottom = "10px";
+        imgEl.style.textAlign = "center";
+        divEl.appendChild(imgEl);
+
+        const pEl1 = document.createElement('p');
+        pEl1.textContent = `Name: ${Employees[i].fullName} - ID: ${Employees[i].empId}`
+        pEl1.style.marginTop = "0";
+        pEl1.style.fontSize = "15px";
+        pEl1.style.textAlign = "center";
+        divEl.appendChild(pEl1);
+
+        const pEl2 = document.createElement('p');
+        pEl2.textContent = `Department: ${Employees[i].department} - Level: ${Employees[i].level}`
+        pEl2.style.fontSize = "15px";
+        pEl2.style.textAlign = "center";
+        divEl.appendChild(pEl2);
+
+        const pEl3 = document.createElement('p');
+        pEl3.textContent = `${Employees[i].salary}`
+        pEl3.style.fontSize = "15px";
+        pEl3.style.textAlign = "center";
+        pEl3.style.marginBottom = "15px";
+        divEl.appendChild(pEl3);
     }
-    imgEl.alt="Personal image";
-    imgEl.style.width="80%";
-    imgEl.style.height="180px";
-    imgEl.style.margin="25px";
-    imgEl.style.marginBottom="10px";
-    imgEl.style.textAlign="center";
-    divEl.appendChild(imgEl);
 
-    const pEl1=document.createElement('p');
-    pEl1.textContent =`Name: ${this.fullName} - ID: ${this.empId}`
-    pEl1.style.marginTop="0";
-    pEl1.style.fontSize="15px";
-    pEl1.style.textAlign="center";
-    divEl.appendChild(pEl1);
-
-    const pEl2=document.createElement('p');
-    pEl2.textContent =`Department: ${this.department} - Level: ${this.level}`
-    pEl2.style.fontSize="15px";
-    pEl2.style.textAlign="center";
-    divEl.appendChild(pEl2);
-
-    const pEl3=document.createElement('p');
-    pEl3.textContent =`${this.salary}`
-    pEl3.style.fontSize="15px";
-    pEl3.style.textAlign="center";
-    divEl.appendChild(pEl3);
 
 
 }
@@ -102,17 +113,33 @@ Employee.prototype.showEmploye=function()
 
 
 
-function addNewEmployee(event){
-    event.preventDefault();
+function addNewEmployee(event) {
+   // event.preventDefault();
     let name = event.target.fullName.value;
     let department = event.target.Departments.value;
     let level = event.target.Levels.value;
     let imageURL = event.target.imageURL.value;
-    let newEmployee = new Employee(name,department,level,imageURL);
-    newEmployee.calSalary();
-    newEmployee.showEmploye();
+    let newEmployee = new Employee(name, department, level, imageURL);
+
+    let jsonEmployee = JSON.stringify(Employees);
+    localStorage.setItem('allEmployees', jsonEmployee);
+
+    //  newEmployee.calSalary();
+
 }
 
+
+
+
+function getAllEmployees() {
+    let jsonArr = localStorage.getItem('allEmployees');
+    let dataFormStorage = JSON.parse(jsonArr);
+    Employees = dataFormStorage;
+}
+
+
+console.log(Employees);
+showEmploye();
 
 
 /*employees information
